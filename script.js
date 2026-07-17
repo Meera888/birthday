@@ -69,9 +69,6 @@ window.addEventListener("load", () => {
     showPage(messageOnePage);
     setTimeout(() => {
       showPage(voiceNotePage);
-      setTimeout(() => {
-        showPage(trustPage);
-      }, 5000);
     }, 5000);
   }, 5000);
 });
