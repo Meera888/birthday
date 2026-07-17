@@ -10,6 +10,7 @@ const revealPage = document.getElementById("revealPage");
 const dogGifPage = document.getElementById("dogGifPage");
 const laterPage = document.getElementById("laterPage");
 const excellentTastePage = document.getElementById("excellentTastePage");
+const voiceNotePage = document.getElementById("voiceNotePage");
 const letterPage = document.getElementById("letterPage");
 const planPage = document.getElementById("planPage");
 const acceptPage = document.getElementById("acceptPage");
@@ -23,10 +24,12 @@ const openEnvelopeBtn = document.getElementById("openEnvelopeBtn");
 const viewPlanBtn = document.getElementById("viewPlanBtn");
 const acceptBtn = document.getElementById("acceptBtn");
 const voiceNoteBtn = document.getElementById("voiceNoteBtn");
+const kissNoteBtn = document.getElementById("kissNoteBtn");
 
 const pages = [
   introPage,
   messageOnePage,
+  voiceNotePage,
   trustPage,
   gifPage,
   choicePage,
@@ -65,16 +68,27 @@ window.addEventListener("load", () => {
   setTimeout(() => {
     showPage(messageOnePage);
     setTimeout(() => {
-      showPage(trustPage);
+      showPage(voiceNotePage);
+      setTimeout(() => {
+        showPage(trustPage);
+      }, 5000);
     }, 5000);
   }, 5000);
 });
 
-voiceNoteBtn.addEventListener("click", () => {
-  const audio = new Audio("voice-note.mp3");
+function playAudio(fileName) {
+  const audio = new Audio(fileName);
   audio.play().catch(() => {
-    console.log("Voice note not available yet. Add a file named voice-note.mp3 to the project folder.");
+    console.log(`Audio file not available yet. Add a file named ${fileName} to the project folder.`);
   });
+}
+
+voiceNoteBtn.addEventListener("click", () => {
+  playAudio("voice-note.mp3");
+});
+
+kissNoteBtn.addEventListener("click", () => {
+  playAudio("kiss.mp3");
 });
 
 notReallyBtn.addEventListener("mouseenter", () => {
