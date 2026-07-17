@@ -115,7 +115,7 @@ riskBtn.addEventListener("click", () => {
           showPage(revealPage);
         }, 5000);
       }, 5000);
-    }, 5000);
+    }, 7000);
   }, 5000);
 });
 
