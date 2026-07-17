@@ -147,9 +147,14 @@ body {
 .letter-card,
 .plan-card,
 .accept-card,
-.birthday-card {
+.birthday-card,
+.voice-note-card {
   width: min(92vw, 760px);
   gap: 1rem;
+}
+
+.voice-note-card {
+  min-height: 260px;
 }
 
 .subtext {
