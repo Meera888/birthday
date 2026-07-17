@@ -9,11 +9,19 @@ const cutePage = document.getElementById("cutePage");
 const revealPage = document.getElementById("revealPage");
 const dogGifPage = document.getElementById("dogGifPage");
 const laterPage = document.getElementById("laterPage");
+const excellentTastePage = document.getElementById("excellentTastePage");
+const letterPage = document.getElementById("letterPage");
+const planPage = document.getElementById("planPage");
+const acceptPage = document.getElementById("acceptPage");
+const birthdayPage = document.getElementById("birthdayPage");
 const maybeBtn = document.getElementById("maybeBtn");
 const yesBtn = document.getElementById("yesBtn");
 const notReallyBtn = document.getElementById("notReallyBtn");
 const riskBtn = document.getElementById("riskBtn");
 const revealBtn = document.getElementById("revealBtn");
+const openEnvelopeBtn = document.getElementById("openEnvelopeBtn");
+const viewPlanBtn = document.getElementById("viewPlanBtn");
+const acceptBtn = document.getElementById("acceptBtn");
 
 const pages = [
   introPage,
@@ -27,6 +35,11 @@ const pages = [
   dogGifPage,
   laterPage,
   proposalPage,
+  excellentTastePage,
+  letterPage,
+  planPage,
+  acceptPage,
+  birthdayPage,
 ];
 
 function showPage(page) {
@@ -70,10 +83,10 @@ riskBtn.addEventListener("click", () => {
         showPage(cutePage);
         setTimeout(() => {
           showPage(revealPage);
-        }, 3000);
+        }, 5000);
       }, 5000);
-    }, 3000);
-  }, 3000);
+    }, 5000);
+  }, 5000);
 });
 
 revealBtn.addEventListener("click", () => {
@@ -82,8 +95,8 @@ revealBtn.addEventListener("click", () => {
     showPage(laterPage);
     setTimeout(() => {
       showPage(proposalPage);
-    }, 3000);
-  }, 3000);
+    }, 5000);
+  }, 5000);
 });
 
 maybeBtn.addEventListener("mouseenter", () => {
@@ -91,5 +104,20 @@ maybeBtn.addEventListener("mouseenter", () => {
 });
 
 yesBtn.addEventListener("click", () => {
-  proposalPage.classList.add("active");
+  showPage(excellentTastePage);
+});
+
+openEnvelopeBtn.addEventListener("click", () => {
+  showPage(letterPage);
+});
+
+viewPlanBtn.addEventListener("click", () => {
+  showPage(planPage);
+});
+
+acceptBtn.addEventListener("click", () => {
+  showPage(acceptPage);
+  setTimeout(() => {
+    showPage(birthdayPage);
+  }, 5000);
 });
