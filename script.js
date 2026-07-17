@@ -22,6 +22,7 @@ const revealBtn = document.getElementById("revealBtn");
 const openEnvelopeBtn = document.getElementById("openEnvelopeBtn");
 const viewPlanBtn = document.getElementById("viewPlanBtn");
 const acceptBtn = document.getElementById("acceptBtn");
+const voiceNoteBtn = document.getElementById("voiceNoteBtn");
 
 const pages = [
   introPage,
@@ -67,6 +68,13 @@ window.addEventListener("load", () => {
       showPage(trustPage);
     }, 5000);
   }, 5000);
+});
+
+voiceNoteBtn.addEventListener("click", () => {
+  const audio = new Audio("voice-note.mp3");
+  audio.play().catch(() => {
+    console.log("Voice note not available yet. Add a file named voice-note.mp3 to the project folder.");
+  });
 });
 
 notReallyBtn.addEventListener("mouseenter", () => {
