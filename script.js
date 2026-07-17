@@ -76,15 +76,21 @@ window.addEventListener("load", () => {
   }, 5000);
 });
 
-function playAudio(fileName) {
+function playAudio(fileName, onEnded) {
   const audio = new Audio(fileName);
+  audio.addEventListener("ended", () => {
+    if (onEnded) onEnded();
+  });
   audio.play().catch(() => {
     console.log(`Audio file not available yet. Add a file named ${fileName} to the project folder.`);
+    if (onEnded) onEnded();
   });
 }
 
 voiceNoteBtn.addEventListener("click", () => {
-  playAudio("voice-note.mp3");
+  playAudio("voice-note.mp3", () => {
+    showPage(trustPage);
+  });
 });
 
 kissNoteBtn.addEventListener("click", () => {
