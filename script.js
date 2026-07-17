@@ -9,6 +9,7 @@ const cutePage = document.getElementById("cutePage");
 const revealPage = document.getElementById("revealPage");
 const dogGifPage = document.getElementById("dogGifPage");
 const laterPage = document.getElementById("laterPage");
+const manifestPage = document.getElementById("manifestingPage");
 const excellentTastePage = document.getElementById("excellentTastePage");
 const voiceNotePage = document.getElementById("voiceNotePage");
 const letterPage = document.getElementById("letterPage");
@@ -25,6 +26,9 @@ const viewPlanBtn = document.getElementById("viewPlanBtn");
 const acceptBtn = document.getElementById("acceptBtn");
 const voiceNoteBtn = document.getElementById("voiceNoteBtn");
 const kissNoteBtn = document.getElementById("kissNoteBtn");
+const manifestIntro = manifestPage.querySelector(".manifesting-intro");
+const manifestCards = Array.from(manifestPage.querySelectorAll(".manifesting-video-card"));
+const manifestVideos = manifestCards.map((card) => card.querySelector("video"));
 
 const pages = [
   introPage,
@@ -38,6 +42,7 @@ const pages = [
   revealPage,
   dogGifPage,
   laterPage,
+  manifestPage,
   proposalPage,
   excellentTastePage,
   letterPage,
@@ -114,12 +119,86 @@ riskBtn.addEventListener("click", () => {
   }, 5000);
 });
 
+function resetManifestSequence() {
+  manifestIntro.classList.remove("is-visible");
+  manifestCards.forEach((card) => card.classList.remove("is-visible"));
+  manifestVideos.forEach((video) => {
+    video.pause();
+    video.currentTime = 0;
+  });
+}
+
+function playManifestSequence() {
+  resetManifestSequence();
+  manifestIntro.classList.add("is-visible");
+
+  let stageIndex = 0;
+
+  function showStage(index) {
+    manifestCards.forEach((card, cardIndex) => {
+      card.classList.toggle("is-visible", cardIndex === index);
+    });
+
+    manifestVideos.forEach((video) => {
+      video.classList.remove("is-visible");
+    });
+
+    const currentVideo = manifestVideos[index];
+    if (!currentVideo) return;
+
+    currentVideo.currentTime = 0;
+
+    const finishStage = () => {
+      currentVideo.removeEventListener("ended", finishStage);
+      currentVideo.removeEventListener("error", failStage);
+      currentVideo.classList.remove("is-visible");
+      if (index < manifestCards.length - 1) {
+        setTimeout(() => showStage(index + 1), 900);
+      } else {
+        setTimeout(() => {
+          showPage(proposalPage);
+        }, 2000);
+      }
+    };
+
+    const failStage = () => {
+      currentVideo.removeEventListener("ended", finishStage);
+      currentVideo.removeEventListener("error", failStage);
+      currentVideo.classList.remove("is-visible");
+      if (index < manifestCards.length - 1) {
+        setTimeout(() => showStage(index + 1), 900);
+      } else {
+        setTimeout(() => {
+          showPage(proposalPage);
+        }, 2000);
+      }
+    };
+
+    currentVideo.addEventListener("ended", finishStage);
+    currentVideo.addEventListener("error", failStage);
+
+    setTimeout(() => {
+      currentVideo.classList.add("is-visible");
+      currentVideo.play().catch(() => {
+        failStage();
+      });
+    }, 700);
+  }
+
+  setTimeout(() => {
+    showStage(stageIndex);
+  }, 1600);
+}
+
 revealBtn.addEventListener("click", () => {
   showPage(dogGifPage);
   setTimeout(() => {
     showPage(laterPage);
     setTimeout(() => {
-      showPage(proposalPage);
+      showPage(manifestPage);
+      setTimeout(() => {
+        playManifestSequence();
+      }, 300);
     }, 5000);
   }, 5000);
 });
