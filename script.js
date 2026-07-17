@@ -27,6 +27,28 @@ const acceptBtn = document.getElementById("acceptBtn");
 const voiceNoteBtn = document.getElementById("voiceNoteBtn");
 const kissNoteBtn = document.getElementById("kissNoteBtn");
 const manifestIntro = manifestPage.querySelector(".manifesting-intro");
+
+function triggerConfetti() {
+  const overlay = document.createElement("div");
+  overlay.className = "confetti-overlay";
+  document.body.appendChild(overlay);
+
+  for (let i = 0; i < 70; i += 1) {
+    const piece = document.createElement("span");
+    piece.className = "confetti-piece";
+    piece.style.left = `${Math.random() * 100}%`;
+    piece.style.top = `${Math.random() * 20}%`;
+    piece.style.background = ["#ff4d79", "#ffd166", "#6ee7b7", "#8b5cf6", "#ffffff"][i % 5];
+    piece.style.setProperty("--drift", `${Math.random() * 180 - 90}deg`);
+    piece.style.setProperty("--delay", `${Math.random() * 0.3}s`);
+    piece.style.animationDuration = `${2.6 + Math.random() * 1.8}s`;
+    overlay.appendChild(piece);
+  }
+
+  setTimeout(() => {
+    overlay.remove();
+  }, 3200);
+}
 const manifestCards = Array.from(manifestPage.querySelectorAll(".manifesting-video-card"));
 const manifestVideos = manifestCards.map((card) => card.querySelector("video"));
 
@@ -114,9 +136,9 @@ riskBtn.addEventListener("click", () => {
         setTimeout(() => {
           showPage(revealPage);
         }, 5000);
-      }, 5000);
-    }, 7000);
-  }, 5000);
+      }, 8000);
+    }, 5000);
+  }, 3500);
 });
 
 function resetManifestSequence() {
@@ -125,22 +147,27 @@ function resetManifestSequence() {
   manifestVideos.forEach((video) => {
     video.pause();
     video.currentTime = 0;
+    video.classList.remove("is-visible");
   });
 }
 
 function playManifestSequence() {
   resetManifestSequence();
+
+  const introDelay = 3000;
+  const stageDelay = 700;
+
   manifestIntro.classList.add("is-visible");
 
   let stageIndex = 0;
 
   function showStage(index) {
     manifestCards.forEach((card, cardIndex) => {
-      card.classList.toggle("is-visible", cardIndex === index);
+      card.classList.toggle("is-visible", cardIndex <= index);
     });
 
-    manifestVideos.forEach((video) => {
-      video.classList.remove("is-visible");
+    manifestVideos.forEach((video, videoIndex) => {
+      video.classList.toggle("is-visible", videoIndex === index);
     });
 
     const currentVideo = manifestVideos[index];
@@ -151,7 +178,7 @@ function playManifestSequence() {
     const finishStage = () => {
       currentVideo.removeEventListener("ended", finishStage);
       currentVideo.removeEventListener("error", failStage);
-      currentVideo.classList.remove("is-visible");
+      currentVideo.classList.add("is-visible");
       if (index < manifestCards.length - 1) {
         setTimeout(() => showStage(index + 1), 900);
       } else {
@@ -164,7 +191,7 @@ function playManifestSequence() {
     const failStage = () => {
       currentVideo.removeEventListener("ended", finishStage);
       currentVideo.removeEventListener("error", failStage);
-      currentVideo.classList.remove("is-visible");
+      currentVideo.classList.add("is-visible");
       if (index < manifestCards.length - 1) {
         setTimeout(() => showStage(index + 1), 900);
       } else {
@@ -178,16 +205,15 @@ function playManifestSequence() {
     currentVideo.addEventListener("error", failStage);
 
     setTimeout(() => {
-      currentVideo.classList.add("is-visible");
       currentVideo.play().catch(() => {
         failStage();
       });
-    }, 700);
+    }, stageDelay);
   }
 
   setTimeout(() => {
     showStage(stageIndex);
-  }, 1600);
+  }, introDelay);
 }
 
 revealBtn.addEventListener("click", () => {
@@ -221,6 +247,7 @@ viewPlanBtn.addEventListener("click", () => {
 
 acceptBtn.addEventListener("click", () => {
   showPage(acceptPage);
+  triggerConfetti();
   setTimeout(() => {
     showPage(birthdayPage);
   }, 5000);
